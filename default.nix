@@ -19,4 +19,11 @@ rustPlatform.buildRustPackage rec {
   src = gitignoreSource ./.;
   cargoSha256 = "1q384jwgdbrnnzm0jr9wmj44vjmmrg5xxrk53h39hfgg8q9xmg26";
   verifyCargoDeps = true;
+
+  meta = {
+    description = "Find and randomize cryptographic hashes in text files";
+    homepage = "https://github.com/simonchatts/hashmash";
+    license = lib.licenses.mit;
+    maintainers = [ maintainers.simonchatts ];
+  };
 }

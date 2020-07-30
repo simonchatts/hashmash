@@ -1,21 +1,15 @@
 # `hashmash`: randomize cryptographic hashes and GUIDs
 
 A small tool to process text files, and pick out strings that look like
-cryptographic hashes, eg the highlighted bits below:
+cryptographic hashes, GUIDs etc:
 
-```
-    "nixpkgs": {
-        "branch": "nixpkgs-unstable",
-        "description": "Snapshotted on 18 June 2020",
-        "homepage": "https://github.com/NixOS/nixpkgs",
-        "rev": "9d0c3ffe6783d59b427d018e8341e0084737fde9",
-                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-        "sha256": "1wlkw8jw63vg1xa5hx63kshag71kl81ncdzfaxi3g1mq376m4bb0",
-                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-        "url_template": "https://github.com/<owner>/<repo>/archive/<rev>.tar.gz"
-    }
-```
+![A screenshot of a sample with highlighted hashes](https://github.com/simonchatts/hashmash/blob/main/example.png?raw=true)
+
+This isn't based on regular expressions or other fixed notions of what a hash
+is, in terms of length or character set. Rather, it uses
+[trigrams](https://en.wikipedia.org/wiki/Trigram) to know what English
+language sort of looks like, and picks out substrings that definitely aren't
+that. (As a result, it might not work so well with very different languages.)
 
 By default the tool just highlights these, but if you pass in the `-r` argument,
 it randomizes all the hashes it finds. It preserves character classes, so eg
@@ -23,7 +17,9 @@ it randomizes all the hashes it finds. It preserves character classes, so eg
 
 ## Install
 
-If you use [nix](https://nixos.org) then just use the `default.nix`.
+If you use [nix](https://nixos.org) then just `import "${src/default.nix} {}`
+where `src` uses `pkgs.fetchFromGitHub` in the usual way. (You can also
+`cachix use simonchatts` to avoid building.)
 
 Otherwise, `cargo build --release`.
 
@@ -34,7 +30,6 @@ identified hashes in red if stdout is a terminal (and not otherwise).
 
 ## Implementation
 
-The algorithm is a simple use of English letter
-[trigrams](https://en.wikipedia.org/wiki/Trigram), so may not work so well for
-other languages. The `-d` flag displays a basic pre-classification that may be
-handy if you're looking further at this.
+The `-d` flag might be handy if looking at the implementation - this
+highlights in green those substrings that pass the basic pre-filter, but that
+aren't categorized as hashes by the actual trigram algorithm.

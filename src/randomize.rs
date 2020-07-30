@@ -1,17 +1,6 @@
 ///! Randomize a string, while maintaining character classes.
+use rand::rngs::ThreadRng;
 use rand::{thread_rng, Rng};
-
-/// Macro for internal use: test a particular character range, and if so,
-/// randomly substitute and continue.
-macro_rules! char_range {
-    ($char_lo:literal, $char_hi: literal, $cvar:ident, $rng:ident, $output:ident) => {
-        if $cvar >= $char_lo && $cvar <= $char_hi {
-            let uvar = $rng.gen_range($char_lo as u8, $char_hi as u8 + 1);
-            $output.push(uvar as char);
-            continue;
-        }
-    };
-}
 
 /// Randomize a string, while preserving major character classes. eg
 /// "123-abc_DEF" might go to "973-qox_NAP".
@@ -19,12 +8,23 @@ pub fn randomize(input: &str) -> String {
     let mut rng = thread_rng();
     let mut output = String::with_capacity(input.len());
     for c in input.chars() {
-        char_range!('0', '9', c, rng, output);
-        char_range!('a', 'z', c, rng, output);
-        char_range!('A', 'Z', c, rng, output);
-        output.push(c);
+        let new_c = try_range('0', '9', c, &mut rng)
+            .or(try_range('a', 'z', c, &mut rng))
+            .or(try_range('A', 'Z', c, &mut rng))
+            .unwrap_or(c);
+        output.push(new_c);
     }
     output
+}
+
+/// Replace a char with a random alternative if within the specified range.
+fn try_range(low: char, high: char, c: char, rng: &mut ThreadRng) -> Option<char> {
+    if c < low || c > high {
+        None
+    } else {
+        let new_u = rng.gen_range(low as u8, high as u8 + 1);
+        Some(new_u as char)
+    }
 }
 
 /// Tests
@@ -42,11 +42,20 @@ mod tests {
         let input = "0123-4567-89ab-cdef-ghij-wxyz-ABCD-EFGH_WXYZ";
         let output = randomize(input);
         let mut changes = 0;
+        let predicates: &[Box<dyn Fn(char) -> bool>] = &[
+            Box::new(|x| x >= '0' && x <= '9'),
+            Box::new(|x| x >= 'a' && x <= 'z'),
+            Box::new(|x| x >= 'A' && x <= 'Z'),
+            Box::new(|x| x == '-'),
+        ];
+
         for (c, d) in input.chars().zip(output.chars()) {
-            assert_eq!(c >= '0' && c <= '9', d >= '0' && d <= '9');
-            assert_eq!(c >= 'a' && c <= 'z', d >= 'a' && d <= 'z');
-            assert_eq!(c >= 'A' && c <= 'Z', d >= 'A' && d <= 'Z');
-            assert_eq!(c == '-', d == '-');
+            // If the input char is in a character class, so is the output char.
+            for pred in predicates {
+                assert_eq!(pred(c), pred(d));
+            }
+
+            // Given that constraint, count up how much shuffling we've done.
             if c != d {
                 changes += 1;
             }
