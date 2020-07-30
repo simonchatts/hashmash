@@ -1,0 +1,48 @@
+.TH HASHMASH 1
+.SH NAME
+hashmash \- identify, and optionally randomize, cryptographic hashes in text files
+.SH SYNOPSIS
+.B hashmash
+[\fB\-r\fR]
+.IR file ...
+.SH DESCRIPTION
+.B hashmash
+runs like \fBcat(1)\fR, over \fIstdin\fR or the specified input file(s). By default it
+highlights the substrings that look like cryptographic hashes, GUIDs, etc. Optionally
+it can also randomize all such strings. This can be handy for generating documentation
+without leaking secrets.
+.PP
+The identification of hash-like substrings doesn't come from a fixed set of patterns.
+Rather, trigrams are used to give \fBhashmash\fR some idea of what human words usually
+look like, and it considers a hash to be anything that deviates wildly from that.
+.PP
+Since the trigram distribution it knows about comes from English, it may hit more false
+positives with other languages.
+.PP
+Highlighting is done using ANSI colour codes, if (and only if) \fIstdout\fR is a terminal.
+.SH OPTIONS
+.TP
+.BR \-r ", " \-\-replace\fR
+Replace identified cryptographic hashes with a random string. This preserves the length
+of the string, and also the class of each character (eg "digit" or "lowercase letter").
+For example,
+.CW
+W6B43240-ad76s==62231DH00
+might get randomized into
+.CW
+Q1L83073-mn13q==03510AP62
+\&.
+.TP
+.BR \-i ", " \-\-in\-place\fR
+Do a \fB--replace\fR, but rather than just send the updated output to stdout, actually
+edit the input files destructively in-place.
+.TP
+.BR \-h ", " \-\-help\fR
+Show help summary.
+.TP
+.BR \-V ", " \-\-version\fR
+Show version number.
+.TP
+.BR \-d ", " \-\-debug\fR
+An assist during development: highlight in green those substrings that pass the crude
+pre-classifier, but which are not classified as hashes by the tangram algorithm.

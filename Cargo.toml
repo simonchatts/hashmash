@@ -1,0 +1,22 @@
+[package]
+name = "hashmash"
+version = "1.0.0"
+edition = "2018"
+
+[[bin]]
+name = "hashmash"
+
+[dependencies]
+atty = "0.2"
+clap = "3.0.0-beta.1"
+mkstemp-rs = "1"
+rand = "0.7"
+regex = "1"
+
+# `build_tri` isn't an example, but a one-time tool that constructs a
+# file (src/trigrams.bitmap) that is then checked in, and used to build
+# the actual `hashmash` binary. It's listed as an example here just as
+# an easy hack, to avoid it polluting the release package.
+[[example]]
+name = "build_tri"
+path = "src/build_tri.rs"
