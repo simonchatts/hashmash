@@ -11,7 +11,7 @@ cryptographic hashes, GUIDs etc:
 This isn't achieved just through fixed regular expressions for standard hash
 types.  Rather, it uses [trigrams](https://en.wikipedia.org/wiki/Trigram) to
 know what English text sort of looks like, and picks out substrings that
-wildly deviate from that. (As a result, it might not work so well with very
+deviate wildly from that. (As a result, it might not work so well with very
 different languages.)
 
 By default the tool just highlights these, but if you pass in the `-r` argument,
@@ -29,7 +29,7 @@ searchable secrets.
 
 ## Install
 
-If you use [nix](https://nixos.org) then just import this repo's
+If you use [Nix](https://nixos.org) then just import this repo's
 `default.nix`; in addition, if you have [Cachix](https://cachix.org) then
 `cachix use simonchatts` gives you access to the binaries pre-built by GitHub.
 
