@@ -1,5 +1,5 @@
-![Continuous integration](https://github.com/simonchatts/hashmash/workflows/continuous%20integration/badge.svg)
-![Cachix binaries](https://github.com/simonchatts/hashmash/workflows/cachix/badge.svg)
+![CI checks](https://github.com/simonchatts/hashmash/workflows/CI%20checks/badge.svg)
+![Cachix binaries](https://github.com/simonchatts/hashmash/workflows/Cachix%20binaries/badge.svg)
 
 # `hashmash`: randomize cryptographic hashes and GUIDs
 
@@ -30,8 +30,8 @@ searchable secrets.
 ## Install
 
 If you use [nix](https://nixos.org) then just import this repo's
-`default.nix`.  (If you use [cachix](https://cachix.org) then `cachix use
-simonchatts` might save you building.)
+`default.nix`; in addition, if you have [Cachix](https://cachix.org) then
+`cachix use simonchatts` gives you access to the binaries pre-built by GitHub.
 
 Otherwise, `cargo build --release`.
 

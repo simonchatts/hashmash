@@ -1,4 +1,4 @@
-name: "continuous integration"
+name: "CI checks"
 on: [push, pull_request]
 jobs:
   check:
