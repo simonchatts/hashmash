@@ -13,4 +13,4 @@ jobs:
         name: simonchatts
         signingKey: '${{ secrets.CACHIX_SIGNING_KEY }}'
     - run: nix-build
-    - run: nix-shell --run "echo OK"
+    - run: nix-shell -p clippy --run "cargo clippy && echo OK"

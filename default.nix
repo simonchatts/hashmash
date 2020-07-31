@@ -15,7 +15,7 @@ rustPlatform.buildRustPackage rec {
   pname = "hashmash";
   version = "0.2.0";
   src = rustFilterSource ./.;
-  cargoSha256 = "1q384jwgdbrnnzm0jr9wmj44vjmmrg5xxrk53h39hfgg8q9xmg26";
+  cargoSha256 = "0x8g0m1l1i29mv5fnk8abn6ycf6az043d47d8f9vwv7bnsdk27b0";
   verifyCargoDeps = true;
 
   meta = {
