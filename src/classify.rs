@@ -19,10 +19,10 @@ pub fn is_hash(word: &str) -> bool {
         // (Note that ascii digit is not the same as `c0.is_digit()`.)
         if c0 >= '0' && c0 <= '9' {
             num_digits += 1;
-        } else
+        }
         // If this is a triple of ascii letters, then see if it's an English trigram.
         // (If it is a triple, it fits in a 15-bit usize, using 5 bits per letter.)
-        if let Some(bit) = triple_to_usize(c0, c1, c2) {
+        else if let Some(bit) = triple_to_usize(c0, c1, c2) {
             num_letter_triples += 1;
             if is_trigram(bit) {
                 num_trigrams += 1;
@@ -60,7 +60,7 @@ fn char_to_usize(c: char) -> Option<usize> {
 /// 4kb bitmap of the top 15% of English letter trigrams.
 /// See `build_tri.rs` for more details - that program constructs the file,
 /// that here gets embedded as a flat read-only table in the executable itself.
-static TRIGRAM_BITMAP: &'static [u8; 4096] = std::include_bytes!("trigrams.bitmap");
+static TRIGRAM_BITMAP: &[u8; 4096] = std::include_bytes!("trigrams.bitmap");
 
 /// Lookup a potential letter trigram in the bitmap. Input is a 15-bit integer, with
 /// three sets of 5 bits each determining a letter (from 'A' == 0 to 'Z' == 25).

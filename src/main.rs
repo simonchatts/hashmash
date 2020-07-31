@@ -100,6 +100,6 @@ fn randomize_and_highlight_in_red(s: &str) -> String {
 }
 
 // ANSI colours
-static NORMAL: &'static str = "\x1b[30m";
-static RED: &'static str = "\x1b[31m";
-static GREEN: &'static str = "\x1b[32m";
+static NORMAL: &str = "\x1b[30m";
+static RED: &str = "\x1b[31m";
+static GREEN: &str = "\x1b[32m";
