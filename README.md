@@ -1,3 +1,6 @@
+![cachix-linux](https://github.com/simonchatts/hashmash/workflows/cachix-linux/badge.svg)
+![cachix-macos](https://github.com/simonchatts/hashmash/workflows/cachix-macos/badge.svg)
+
 # `hashmash`: randomize cryptographic hashes and GUIDs
 
 A small tool to process text files, and pick out strings that look like

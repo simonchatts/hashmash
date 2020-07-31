@@ -15,7 +15,7 @@ use randomize::randomize;
 
 /// Highlight or randomize strings that look like cryptographic hashes or GUIDs.
 #[derive(Clap)]
-#[clap(version = "0.1.0")]
+#[clap(version = "0.2.0")]
 pub struct Opts {
     /// Actually randomize any identified hashes, don't just highlight them.
     #[clap(short, long)]

@@ -1,4 +1,4 @@
-name: "Test"
+name: "cachix-linux"
 on:
   pull_request:
   push:
