@@ -9,8 +9,8 @@ pub fn randomize(input: &str) -> String {
     let mut output = String::with_capacity(input.len());
     for c in input.chars() {
         let new_c = try_range('0', '9', c, &mut rng)
-            .or(try_range('a', 'z', c, &mut rng))
-            .or(try_range('A', 'Z', c, &mut rng))
+            .or_else(|| try_range('a', 'z', c, &mut rng))
+            .or_else(|| try_range('A', 'Z', c, &mut rng))
             .unwrap_or(c);
         output.push(new_c);
     }
