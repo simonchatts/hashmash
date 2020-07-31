@@ -9,7 +9,7 @@ name = "hashmash"
 [dependencies]
 clap = "3.0.0-beta.1"
 fileinput = "0.3"
-isatty = "0.1"
+isatty = "0.2"
 rand = "0.7"
 regex = "1"
 

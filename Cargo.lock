@@ -137,15 +137,9 @@ dependencies = [
 
 [[package]]
 name = "isatty"
-version = "0.1.9"
+version = "0.2.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "e31a8281fc93ec9693494da65fbf28c0c2aa60a2eaec25dc58e2f31952e95edc"
-dependencies = [
- "cfg-if",
- "libc",
- "redox_syscall",
- "winapi",
-]
+checksum = "05ed1865a9f01be9ed3bd618b241fb46bf2fbf1563368ca275fb491f0ecb5047"
 
 [[package]]
 name = "lazy_static"
@@ -261,12 +255,6 @@ checksum = "ca3129af7b92a17112d59ad498c6f81eaf463253766b90396d39ea7a39d6613c"
 dependencies = [
  "rand_core",
 ]
-
-[[package]]
-name = "redox_syscall"
-version = "0.1.57"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "41cc0f7e4d5d4544e8861606a285bb08d3e70712ccc7d2b84d7c0ccfaf4b05ce"
 
 [[package]]
 name = "regex"
