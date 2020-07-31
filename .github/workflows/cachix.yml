@@ -1,10 +1,8 @@
-name: "cachix-linux"
-on:
-  pull_request:
-  push:
+name: "cachix"
+on: [push, pull_request]
 jobs:
   tests:
-    runs-on: ubuntu-latest
+    runs-on: [ubuntu-latest, macos-latest]
     steps:
     - uses: actions/checkout@v2.3.1
     - uses: cachix/install-nix-action@v10
@@ -13,4 +11,4 @@ jobs:
         name: simonchatts
         signingKey: '${{ secrets.CACHIX_SIGNING_KEY }}'
     - run: nix-build
-    - run: nix-shell -p clippy --run "cargo clippy && echo OK"
+    - run: nix-shell --run "echo OK"

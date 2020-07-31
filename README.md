@@ -1,5 +1,5 @@
-![cachix-linux](https://github.com/simonchatts/hashmash/workflows/cachix-linux/badge.svg)
-![cachix-macos](https://github.com/simonchatts/hashmash/workflows/cachix-macos/badge.svg)
+![Continuous integration](https://github.com/simonchatts/hashmash/workflows/continuous%20integration/badge.svg)
+![Cachix binaries](https://github.com/simonchatts/hashmash/workflows/cachix/badge.svg)
 
 # `hashmash`: randomize cryptographic hashes and GUIDs
 
