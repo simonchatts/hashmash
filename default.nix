@@ -16,7 +16,7 @@ rustPlatform.buildRustPackage rec {
   pname = "hashmash";
   version = "1.0.0";
   src = rustFilterSource ./.;
-  cargoSha256 = "0x7lrqiwxwfdkc6ysa3fnp10591q7d46m36bny9csa58k2bjsdx8";
+  cargoSha256 = "0ja8snfv0x0y913zgqiy68m9vzbgslrc68c824fn88njgv0135qc";
   verifyCargoDeps = true;
 
   # Handle the man page

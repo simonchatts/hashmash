@@ -1,5 +1,6 @@
 ![CI checks](https://github.com/simonchatts/hashmash/workflows/CI%20checks/badge.svg)
 ![Cachix binaries](https://github.com/simonchatts/hashmash/workflows/Cachix%20binaries/badge.svg)
+![Release-candidate binaries](https://github.com/simonchatts/hashmash/workflows/Release-candidate%20binaries/badge.svg)
 
 # `hashmash`: randomize cryptographic hashes and GUIDs
 
@@ -29,6 +30,8 @@ might get randomized to
     Q1L83073-mn13q==03510AP62
 
 ## Install
+
+Debian packages, and standalone binaries for common platforms, are available on the [release page](https://github.com/simonchatts/hashmash/releases).
 
 If you use [Nix](https://nixos.org) then just import this repo's
 `default.nix`; in addition, if you have [Cachix](https://cachix.org) then

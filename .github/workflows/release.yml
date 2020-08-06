@@ -1,0 +1,177 @@
+# Build a set of release binaries when we tag a new version.
+
+on: [push, pull_request]
+name: Release-candidate binaries
+
+jobs:
+  quickcheck:
+    runs-on: ubuntu-latest
+    outputs:
+      version: ${{ steps.rustversion.outputs.rustversion }}
+    steps:
+    - uses: actions/checkout@v2
+    - run: cargo check
+    - run: cargo pkgid
+    - run: 'echo "$(cargo pkgid | cut -d# -f2)"'
+    - id: rustversion
+      run: 'echo "::set-output name=rustversion::$(cargo pkgid | cut -d# -f2)"'
+  debbuild:
+    needs: [quickcheck]
+    runs-on: ubuntu-latest
+    name: Amd64Deb
+    steps:
+    - uses: actions/checkout@v2
+    - name: BuildDeb
+      id: debbuild
+      uses: ebbflow-io/cargo-deb-amd64-ubuntu@1.0
+    - name: Upload Deb Artifact
+      uses: actions/upload-artifact@v2
+      with:
+        name: amd64deb
+        path: ./target/x86_64-unknown-linux-musl/debian/*
+  raspbianbuild:
+    needs: [quickcheck]
+    runs-on: ubuntu-latest
+    name: Armv7Deb
+    steps:
+    - uses: actions/checkout@v2
+    - name: BuildDeb
+      id: debbuild
+      uses: ebbflow-io/cargo-deb-armv7-debian@1.0
+    - name: Upload Deb Artifact
+      uses: actions/upload-artifact@v2
+      with:
+        name: armv7deb
+        path: ./target/armv7-unknown-linux-musleabihf/debian/*
+  windowsbuild:
+    needs: [quickcheck]
+    runs-on: windows-latest
+    env:
+      RUSTFLAGS: '-C target-feature=+crt-static'
+    name: Windows
+    steps:
+    - uses: actions/checkout@v2
+    - name: Build
+      run: cargo build --release
+    - name: Upload Bin Artifact
+      uses: actions/upload-artifact@v2
+      with:
+        name: windows
+        path: ./target/release/hashmash.exe
+  macosbuild:
+    needs: [quickcheck]
+    runs-on: macos-latest
+    name: MacOS
+    steps:
+    - uses: actions/checkout@v2
+    - name: Build
+      run: cargo build --release
+    - name: Upload Bin Artifact
+      uses: actions/upload-artifact@v2
+      with:
+        name: macos
+        path: ./target/release/hashmash
+  amd64binary:
+    needs: [quickcheck]
+    runs-on: ubuntu-latest
+    name: Amd64StaticBinary
+    steps:
+    - uses: actions/checkout@v2
+    - name: StaticBinaryBuild
+      id: amd64staticbuild
+      uses: ebbflow-io/cargo-deb-amd64-ubuntu@1.0
+      with:
+        cmd: cargo build --release --target=x86_64-unknown-linux-musl
+    - name: Upload Bin Artifact
+      uses: actions/upload-artifact@v2
+      with:
+        name: amd64binary
+        path: ./target/x86_64-unknown-linux-musl/release/hashmash
+  arm7binary:
+    needs: [quickcheck]
+    runs-on: ubuntu-latest
+    name: Armv7StaticBinary
+    steps:
+    - uses: actions/checkout@v2
+    - name: StaticBinaryBuild
+      id: armv7statibuild
+      uses: ebbflow-io/cargo-deb-armv7-debian@1.0
+      with:
+        cmd: cargo build --release --target=armv7-unknown-linux-musleabihf
+    - name: Upload Bin Artifact
+      uses: actions/upload-artifact@v2
+      with:
+        name: armv7binary
+        path: ./target/armv7-unknown-linux-musleabihf/release/hashmash
+  update_release_draft:
+    needs: [quickcheck, arm7binary, amd64binary, macosbuild, windowsbuild, raspbianbuild, debbuild]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Create Release
+        id: create_release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: '${{ needs.quickcheck.outputs.version }}'
+          release_name: Release ${{ needs.quickcheck.outputs.version }}
+          body: 'Change Me'
+          draft: true
+          prerelease: false
+      - uses: actions/download-artifact@v2
+      - run: ls -lha
+      - name: Upload amd64 deb Release Asset
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ./amd64deb/hashmash_${{needs.quickcheck.outputs.version}}_amd64.deb
+          asset_name: 'hashmash_${{needs.quickcheck.outputs.version}}_amd64.deb'
+          asset_content_type: application/vnd.debian.binary-package
+      - name: Upload armv7 deb Release Asset
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ./armv7deb/hashmash_${{needs.quickcheck.outputs.version}}_armhf.deb
+          asset_name: 'hashmash_${{needs.quickcheck.outputs.version}}_armhf.deb'
+          asset_content_type: application/vnd.debian.binary-package
+      - name: Upload Windows Release Asset
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ./windows/hashmash.exe
+          asset_name: 'hashmash_${{needs.quickcheck.outputs.version}}_windows.exe'
+          asset_content_type: application/octet-stream
+      - name: Upload MacOS Release Asset
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ./macos/hashmash
+          asset_name: 'hashmash_${{needs.quickcheck.outputs.version}}_macos_intel'
+          asset_content_type: application/octet-stream
+      - name: Upload Armv7 Static Binary Zip Release Asset
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ./armv7binary/hashmash
+          asset_name: 'hashmash_${{needs.quickcheck.outputs.version}}_linux_armv7_binary'
+          asset_content_type: application/octet-stream
+      - name: Upload Amd64 Static Binary Zip Release Asset
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ./amd64binary/hashmash
+          asset_name: 'hashmash_${{needs.quickcheck.outputs.version}}_linux_x86-64_binary'
+          asset_content_type: application/octet-stream

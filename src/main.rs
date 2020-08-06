@@ -4,7 +4,6 @@
 //! in text files, and optionally randomize them (for, eg, documentation).
 
 use clap::Clap;
-use mkstemp::TempFile;
 use std::env;
 use std::fs::{self, File};
 use std::io::{self, BufReader, BufWriter};
@@ -71,13 +70,15 @@ fn process(opts: Opts) -> io::Result<()> {
                 // Transform in-place. Write to a temporary file, then atomically rename
                 // that back to the original filename. Could be smarter about failures.
                 //
-                let temp_file =
-                    TempFile::new(&format!("{}-temp-XXXXXX", filename), false)?;
-                let temp_filename = temp_file.path();
+
+                // Cheesy unlikely-to-exist temporary file, on the same
+                // filesystem as the target. We do it this way (vs eg `mkstemp`)
+                // as a cheap way to achieve Windows compatibility.
+                let temp_filename = format!("{}~~~hashmash-{}", filename, process::id());
                 {
                     // Create a scope just for fastidiousness (not required) so the
                     // temporary file is closed before we rename it.
-                    let output_file = File::create(temp_filename)?;
+                    let output_file = File::create(&temp_filename)?;
                     let mut output_file = BufWriter::new(output_file);
                     transformer.run(input_file, &mut output_file)?;
                 }

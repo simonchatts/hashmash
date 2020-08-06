@@ -96,7 +96,6 @@ version = "1.0.0"
 dependencies = [
  "atty",
  "clap",
- "mkstemp-rs",
  "rand",
  "regex",
 ]
@@ -146,15 +145,6 @@ name = "memchr"
 version = "2.3.3"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "3728d817d99e5ac407411fa471ff9800a778d88a24685968b36824eaf4bee400"
-
-[[package]]
-name = "mkstemp-rs"
-version = "1.0.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "ab06da7d0a30c709867eb54e757f86b69e3b4dd4ac3c0f9502edec4e077a604e"
-dependencies = [
- "libc",
-]
 
 [[package]]
 name = "os_str_bytes"
@@ -279,9 +269,9 @@ checksum = "73473c0e59e6d5812c5dfe2a064a6444949f089e20eec9a2e5506596494e4623"
 
 [[package]]
 name = "syn"
-version = "1.0.37"
+version = "1.0.38"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "239f255b9e3429350f188c27b807fc9920a15eb9145230ff1a7d054c08fec319"
+checksum = "e69abc24912995b3038597a7a593be5053eb0fb44f3cc5beec0deb421790c1f4"
 dependencies = [
  "proc-macro2",
  "quote",
