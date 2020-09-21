@@ -11,7 +11,7 @@ name = "hashmash"
 
 [dependencies]
 atty = "0.2"
-clap = "3.0.0-beta.1"
+clap = "3.0.0-beta.2"
 rand = "0.7"
 regex = "1"
 
