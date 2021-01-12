@@ -1,7 +1,8 @@
-#![warn(missing_debug_implementations, rust_2018_idioms, missing_docs)]
-
 //! Identify substrings that look like cryptographic hashes/GUIDs/UUIDs/etc
 //! in text files, and optionally randomize them (for, eg, documentation).
+
+#![warn(missing_debug_implementations, rust_2018_idioms, missing_docs)]
+#![deny(clippy::all)]
 
 use clap::Clap;
 use std::env;
