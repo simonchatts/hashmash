@@ -1,32 +1,13 @@
-# niv manages pinned nixpkgs
-{ pkgs ? import (import ./nix/sources.nix).nixpkgs {} }:
-with pkgs;
-
-mkShell {
-
-  # Build-time dependencies
-  nativeBuildInputs = [
-
-    # Basic build tools
-    rustc
-    cargo
-
-  ] ++ stdenv.lib.optionals stdenv.isx86_64 [
-
-    # Interactive development stuff that doesn't always build on ARM, where
-    # we just need a deployment target.
-    #
-    # Note that these work fine with VSCode, using the Nix Environment
-    # plugin, given that `"rust-analyzer.serverPath": "rust-analyzer"`
-    # is specified in the workspace settings.json.
-    cargo-asm
-    cargo-flamegraph
-    cargo-watch
-    clippy
-    evcxr
-    rust-analyzer
-    rustfmt
-
-  ];
-
-}
+# Compatibility shim for any pre-flake uses - should go before too long.
+# https://github.com/arrterian/nix-env-selector/issues/53 is one blocker.
+let flakeCompat =
+  import
+    (
+      fetchTarball {
+        url = "https://github.com/edolstra/flake-compat/archive/99f1c2157fba4bfe6211a321fd0ee43199025dbf.tar.gz";
+        sha256 = "0x2jn3vrawwv9xp15674wjz9pixwjyj3j771izayl962zziivbx2";
+      }
+    )
+    { src = ./.; };
+in
+flakeCompat.shellNix

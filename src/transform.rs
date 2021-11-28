@@ -48,7 +48,7 @@ impl Transformer {
     }
 
     /// Process a file using the pre-computed options.
-    pub fn run<R, W>(self: &mut Self, reader: R, writer: &mut W) -> io::Result<()>
+    pub fn run<R, W>(&mut self, reader: R, writer: &mut W) -> io::Result<()>
     where
         R: BufRead,
         W: Write,

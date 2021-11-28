@@ -17,7 +17,7 @@ pub fn is_hash(word: &str) -> bool {
 
         // If the first character of the triple is an ascii digit, just count that.
         // (Note that ascii digit is not the same as `c0.is_digit()`.)
-        if c0 >= '0' && c0 <= '9' {
+        if ('0'..='9').contains(&c0) {
             num_digits += 1;
         }
         // If this is a triple of ascii letters, then see if it's an English trigram.
@@ -51,10 +51,10 @@ fn triple_to_usize(c0: char, c1: char, c2: char) -> Option<usize> {
 /// Convert a single char into a 5-bit usize if it's just an ascii letter.
 fn char_to_usize(c: char) -> Option<usize> {
     let c = c.to_ascii_lowercase();
-    if c < 'a' || c > 'z' {
-        None
-    } else {
+    if ('a'..='z').contains(&c) {
         Some(c as usize - 'a' as usize)
+    } else {
+        None
     }
 }
 

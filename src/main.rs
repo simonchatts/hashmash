@@ -4,7 +4,7 @@
 #![warn(missing_debug_implementations, rust_2018_idioms, missing_docs)]
 #![deny(clippy::all)]
 
-use clap::Clap;
+use clap::Parser;
 use std::env;
 use std::fs::{self, File};
 use std::io::{self, BufReader, BufWriter};

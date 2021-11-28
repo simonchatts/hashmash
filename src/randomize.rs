@@ -25,8 +25,7 @@ fn try_range(low: char, high: char, c: char, rng: &mut ThreadRng) -> Option<char
     if c < low || c > high {
         None
     } else {
-        let new_u = rng.gen_range(low as u8, high as u8 + 1);
-        Some(new_u as char)
+        Some(rng.gen_range(low..=high))
     }
 }
 

@@ -1,4 +1,4 @@
 {
-    "nixEnvSelector.nixShellConfig": "${workspaceRoot}/shell.nix",
-    "rust-analyzer.serverPath": "rust-analyzer"
+    "rust-analyzer.serverPath": "rust-analyzer",
+    "nixEnvSelector.nixFile": "${workspaceRoot}/shell.nix"
 }

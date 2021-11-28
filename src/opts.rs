@@ -1,9 +1,9 @@
 //! Type defining the command-line arguments (help text comes from docstrings).
-use clap::Clap;
+use clap::Parser;
 
 /// Highlight or randomize strings that look like cryptographic hashes or GUIDs
-#[derive(Clap)]
-#[clap(version = "1.0.0")]
+#[derive(Parser)]
+#[clap(version = "1.0.1")] // Keep in sync with flake.nix and Cargo.toml
 pub struct Opts {
     /// Actually randomize any identified hashes, don't just highlight them
     #[clap(short, long)]

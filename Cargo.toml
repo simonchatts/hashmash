@@ -1,6 +1,6 @@
 [package]
 name = "hashmash"
-version = "1.0.0"
+version = "1.0.1" # keep in sync with flake.nix and src/opts.rs
 edition = "2018"
 authors = [ "Simon Chatterjee" ]
 license-file = "LICENSE"
@@ -11,8 +11,8 @@ name = "hashmash"
 
 [dependencies]
 atty = "0.2"
-clap = "3.0.0-beta.1"
-rand = "0.7"
+clap = "3.0.0-beta.5"
+rand = "0.8"
 regex = "1"
 
 # `build_tri` isn't an example, but a one-time tool that constructs a

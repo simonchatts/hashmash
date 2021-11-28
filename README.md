@@ -31,12 +31,13 @@ might get randomized to
 
 ## Install
 
-Debian packages, and standalone binaries for common platforms, are available on the [release page](https://github.com/simonchatts/hashmash/releases).
+Debian packages, and standalone binaries for common platforms, are available on
+the [release page](https://github.com/simonchatts/hashmash/releases).
 
-If you use [Nix](https://nixos.org) then just import this repo's
-`default.nix`; in addition, if you have [Cachix](https://cachix.org) then
-`cachix use simonchatts` gives you access to the binaries pre-built by GitHub
-(x86_64 linux/macOS).
+If you use [Nix](https://nixos.org) then just use this repo's `flake.nix` or
+import its `default.nix`; in addition, if you have [Cachix](https://cachix.org)
+then `cachix use simonchatts` gives you access to the binaries pre-built by
+GitHub (x86_64 linux/macOS).
 
 Otherwise, `cargo build --release`.
 
