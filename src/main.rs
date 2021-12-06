@@ -1,7 +1,13 @@
 //! Identify substrings that look like cryptographic hashes/GUIDs/UUIDs/etc
 //! in text files, and optionally randomize them (for, eg, documentation).
 
-#![warn(missing_debug_implementations, rust_2018_idioms, missing_docs)]
+#![warn(
+    missing_debug_implementations,
+    rust_2018_idioms,
+    missing_docs,
+    unused_crate_dependencies,
+    unused
+)]
 #![deny(clippy::all)]
 
 use clap::Parser;

@@ -1,13 +1,21 @@
-# Compatibility shim for any pre-flake uses - should go before too long.
-# https://github.com/arrterian/nix-env-selector/issues/53 is one blocker.
-let flakeCompat =
-  import
-    (
-      fetchTarball {
-        url = "https://github.com/edolstra/flake-compat/archive/99f1c2157fba4bfe6211a321fd0ee43199025dbf.tar.gz";
-        sha256 = "0x2jn3vrawwv9xp15674wjz9pixwjyj3j771izayl962zziivbx2";
-      }
-    )
-    { src = ./.; };
-in
-flakeCompat.shellNix
+# hashmash development environment
+{ pkgs ? import <nixpkgs> { } }:
+pkgs.mkShell {
+  # Host environment tools
+  nativeBuildInputs = with pkgs; [
+    # Basic build tools
+    rustc
+    cargo
+
+    # Interactive development
+    rust-analyzer
+    rustfmt
+    clippy
+    nixpkgs-fmt
+  ];
+
+  # Build inputs (eg for target system if cross-compiling)
+  buildInputs = with pkgs; [
+    libiconv
+  ];
+}

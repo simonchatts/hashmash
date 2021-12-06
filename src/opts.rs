@@ -3,7 +3,7 @@ use clap::Parser;
 
 /// Highlight or randomize strings that look like cryptographic hashes or GUIDs
 #[derive(Parser)]
-#[clap(version = "1.0.1")] // Keep in sync with flake.nix and Cargo.toml
+#[clap(version)]
 pub struct Opts {
     /// Actually randomize any identified hashes, don't just highlight them
     #[clap(short, long)]

@@ -1,57 +1,61 @@
-# Flake specifying both how to package a production binary, and create a
-# development environment, all fully declaratively and reproducibly.
+# hashmash flake
+#
+# Considerable inspiration taken from
+# https://hoverbear.org/blog/a-flake-for-your-crate/
 {
   description = "Find and randomize cryptographic hashes in text files";
 
   inputs = {
-    nixpkgs.url = "github:nixos/nixpkgs";
-    flake-utils.url = "github:numtide/flake-utils";
+    nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
   };
 
-  outputs = { self, nixpkgs, flake-utils }:
-    flake-utils.lib.eachDefaultSystem (system:
-      let
-        pkgs = nixpkgs.legacyPackages.${system};
-        rustFilterSource = builtins.filterSource (path: _: builtins.match regex path != null);
-        regex = ".*/Cargo\.(lock|toml)|.*\.1|.*/src($|/.*)"; # Just include: Cargo.toml, Cargo.lock, *.1, src/**
-      in
-      {
-        # Production package
-        packages.hashmash =
-          pkgs.rustPlatform.buildRustPackage {
-            # Package the binary
-            pname = "hashmash";
-            version = "1.0.1"; # Keep in sync with Cargo.toml and src/opts.rs
-            src = rustFilterSource ./.;
-            cargoSha256 = "sha256-P+V1dwzzvCVErhxPIZhU4WSIfxSyvk/7wfNq3UjJe+4=";
-            verifyCargoDeps = true;
+  outputs = { self, nixpkgs }:
+    let
+      # Admin
+      cargoToml = builtins.fromTOML (builtins.readFile ./Cargo.toml);
+      name = cargoToml.package.name;
+      systems = [ "x86_64-linux" "aarch64-linux" "x86_64-darwin" "aarch64-darwin" ];
+      forAllSystems = f: nixpkgs.lib.genAttrs systems (system:
+        let pkgs = import nixpkgs {
+          inherit system;
+          overlays = [ self.overlay ];
+        }; in f pkgs);
+    in
+    {
+      # Overlay
+      overlay = final: prev: { "${name}" = final.callPackage ./. { }; };
 
-            # Package the man page
-            nativeBuildInputs = [ pkgs.installShellFiles ];
-            postInstall = '' installManPage hashmash.1 '';
+      # Packages (built by `nix build .#<name>`)
+      packages = forAllSystems (pkgs: { "${name}" = pkgs."${name}"; });
 
-            # Metadata
-            meta = {
-              description = "Find and randomize cryptographic hashes in text files";
-              homepage = "https://github.com/simonchatts/hashmash";
-              license = pkgs.lib.licenses.mit;
-              maintainers = [ pkgs.maintainers.simonchatts ];
-            };
-          };
+      # Default Package (built by `nix build .`)
+      defaultPackage = forAllSystems (pkgs: pkgs."${name}");
 
-        defaultPackage = self.packages.${system}.hashmash;
+      # Development environment
+      devShell = forAllSystems (pkgs: import ./shell.nix { inherit pkgs; });
 
-        # Development environment
-        devShell = pkgs.mkShell {
-          buildInputs = with pkgs; [
-            rustc
-            cargo
-            clippy
-            rust-analyzer
-            rustfmt
-          ] ++ pkgs.lib.optionals pkgs.stdenv.isDarwin [
-            libiconv
-          ];
-        };
+      # Basic CI checks
+      checks = forAllSystems (pkgs: {
+        "${name}" = pkgs."${name}";
+
+        # Source code formatting.
+        format = pkgs.runCommand "check-format"
+          { buildInputs = [ pkgs.cargo pkgs.rustfmt pkgs.nixpkgs-fmt ]; }
+          ''
+            ${pkgs.cargo}/bin/cargo fmt --manifest-path ${./.}/Cargo.toml -- --check
+            ${pkgs.nixpkgs-fmt}/bin/nixpkgs-fmt --check ${./.}
+            touch $out # success
+          '';
+
+        # Doesn't work yet, and is also slow (re-downloads crates.io)
+        #
+        # clippy = pkgs.runCommand "clippy"
+        #   { buildInputs = [ pkgs.cargo pkgs.clippy ]; }
+        #   ''
+        #     CARGO_HOME=. ${pkgs.cargo}/bin/cargo clippy --manifest-path ${./.}/Cargo.toml -- -D warnings
+        #     touch $out # success
+        #   '';
+
       });
+    };
 }

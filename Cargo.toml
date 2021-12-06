@@ -1,6 +1,6 @@
 [package]
 name = "hashmash"
-version = "1.0.1" # keep in sync with flake.nix and src/opts.rs
+version = "1.0.1" # Automatically picked up everywhere else that needs it
 edition = "2018"
 authors = [ "Simon Chatterjee" ]
 license-file = "LICENSE"
