@@ -1,6 +1,6 @@
 [package]
 name = "hashmash"
-version = "1.0.1" # Automatically picked up everywhere else that needs it
+version = "1.0.2" # Automatically picked up everywhere else that needs it
 edition = "2018"
 authors = [ "Simon Chatterjee" ]
 license-file = "LICENSE"

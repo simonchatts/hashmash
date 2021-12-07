@@ -7,7 +7,7 @@ jobs:
   # Clippy is done in a special way to use the additional features of
   # nightly, but without failing when those aren't available - see
   # https://github.com/actions-rs/meta/blob/master/recipes/nightly-lints.md
-  fmt-clippy:
+  clippy:
     name: clippy
     runs-on: ubuntu-latest
     steps:
