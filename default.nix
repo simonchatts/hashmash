@@ -1,17 +1,14 @@
 # production package for hashmash
-{ lib, rustPlatform, installShellFiles, rustc, cargo, clippy, libiconv }:
+{ flib, stdenv, lib, rustPlatform, installShellFiles, rustc, cargo, clippy, libiconv }:
 
 let
-  # Just include: Cargo.toml, Cargo.lock, *.1, src/**
-  regex = ".*/Cargo\.(lock|toml)|.*\.1|.*/src($|/.*)";
-  rustFilterSource = builtins.filterSource (path: _: builtins.match regex path != null);
-  cargoToml = (builtins.fromTOML (builtins.readFile ./Cargo.toml));
+  cargoToml = flib.readCargoToml ./.;
 in
 rustPlatform.buildRustPackage {
   # Package the binary
-  pname = cargoToml.package.name;
-  version = cargoToml.package.version;
-  src = rustFilterSource ./.;
+  pname = cargoToml.name;
+  version = cargoToml.version;
+  src = flib.rustFilterSource ./.;
   cargoLock = {
     lockFile = ./Cargo.lock;
   };
@@ -20,7 +17,7 @@ rustPlatform.buildRustPackage {
     cargo
     installShellFiles
   ];
-  buildInputs = [
+  buildInputs = lib.optionals stdenv.isDarwin [
     libiconv
   ];
 

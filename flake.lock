@@ -1,23 +1,43 @@
 {
   "nodes": {
+    "flake-lib": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1640276702,
+        "narHash": "sha256-Ht5t7OutW7dplBv2jffkqlVHG2Xch8b7ap7OGLDBdfc=",
+        "ref": "main",
+        "rev": "6d86397bc9c37dc4a95db51120f97eb2b1cbac3b",
+        "revCount": 7,
+        "type": "git",
+        "url": "ssh://git@github.com/simonchatts/flake-lib"
+      },
+      "original": {
+        "ref": "main",
+        "type": "git",
+        "url": "ssh://git@github.com/simonchatts/flake-lib"
+      }
+    },
     "nixpkgs": {
       "locked": {
-        "lastModified": 1638553308,
-        "narHash": "sha256-qlHRqp+7gJj+LUNfEl01M9xHQoX2Bx4e1ha/nssXSo8=",
+        "lastModified": 1638806821,
+        "narHash": "sha256-v2qd2Bsmzft53s43eCbN+4ocrLksRdFLyF/MAGuWuDA=",
         "owner": "NixOS",
         "repo": "nixpkgs",
-        "rev": "2df15ba83d0510a56f2583fd3481723835acb5a1",
+        "rev": "bc5d68306b40b8522ffb69ba6cff91898c2fbbff",
         "type": "github"
       },
       "original": {
-        "owner": "NixOS",
-        "ref": "nixpkgs-unstable",
-        "repo": "nixpkgs",
-        "type": "github"
+        "id": "nixpkgs",
+        "type": "indirect"
       }
     },
     "root": {
       "inputs": {
+        "flake-lib": "flake-lib",
         "nixpkgs": "nixpkgs"
       }
     }
