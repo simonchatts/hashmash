@@ -31,7 +31,9 @@ struct Bitmap {
 }
 
 impl Bitmap {
-    fn new() -> Self { Bitmap { bytes: [0; 4096] } }
+    fn new() -> Self {
+        Bitmap { bytes: [0; 4096] }
+    }
 
     fn set(&mut self, bit: usize) {
         let byte = bit / 8;

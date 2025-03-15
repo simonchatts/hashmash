@@ -21,7 +21,7 @@ like constructing documentation without leaking secrets. By default this just
 writes the new file to stdout, but `--in-place` (which implies `--replace`)
 does a destructive in-place edit of all the provided files.
 
-The randomization reserves character classes, so for example:
+The randomization preserves character classes, so for example:
 
     W6B43240-ad76s==62231DH00
 

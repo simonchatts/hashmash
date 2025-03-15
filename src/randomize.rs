@@ -1,13 +1,13 @@
-///! Randomize a string, while maintaining character classes.
+//! Randomize a string, while maintaining character classes.
 use rand::rngs::ThreadRng;
-use rand::{thread_rng, Rng};
+use rand::{rng, Rng};
 
 /// Randomize a string, while preserving major character classes. eg
 /// "123-abc_DEF" might go to "973-qox_NAP". It doesn't matter that the random
 /// number generation isn't cryptographic quality - from a security perspective,
 /// it could randomize everyting to '000-aaa_AAA" and that would be fine.
 pub fn randomize(input: &str) -> String {
-    let mut rng = thread_rng();
+    let mut rng = rng();
     let mut output = String::with_capacity(input.len());
     for c in input.chars() {
         let new_c = None // Just to align next few lines
@@ -25,7 +25,7 @@ fn try_range(low: char, high: char, c: char, rng: &mut ThreadRng) -> Option<char
     if c < low || c > high {
         None
     } else {
-        Some(rng.gen_range(low..=high))
+        Some(rng.random_range(low..=high))
     }
 }
 

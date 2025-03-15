@@ -1,8 +1,7 @@
 //! Take all the options and make a `transformer` from any `BufRead` to `Write`.
 
-use atty::Stream;
 use regex::{Captures, Regex};
-use std::io::{self, BufRead, Write};
+use std::io::{self, stdout, BufRead, IsTerminal, Write};
 
 use crate::classify;
 use crate::opts::Opts;
@@ -24,7 +23,7 @@ impl Transformer {
         let pre_classifier = Regex::new(r"([a-zA-Z0-9-]{8,})").unwrap();
 
         // Whether or not stdout is a tty
-        let use_colour = !opts.in_place && atty::is(Stream::Stdout);
+        let use_colour = !opts.in_place && stdout().is_terminal();
 
         // Select the appropriate transform functions for the options
         let transform_hash = match (opts.replace, use_colour) {
@@ -83,11 +82,17 @@ impl Transformer {
 // Bunch of transformer functions from which to choose. `randomize` also
 // fits the type and is another option.
 
-fn identity(s: &str) -> String { s.to_string() }
+fn identity(s: &str) -> String {
+    s.to_string()
+}
 
-fn highlight_in_green(s: &str) -> String { format!("{}{}{}", GREEN, s, NORMAL) }
+fn highlight_in_green(s: &str) -> String {
+    format!("{}{}{}", GREEN, s, NORMAL)
+}
 
-fn highlight_in_red(s: &str) -> String { format!("{}{}{}", RED, s, NORMAL) }
+fn highlight_in_red(s: &str) -> String {
+    format!("{}{}{}", RED, s, NORMAL)
+}
 
 fn randomize_and_highlight_in_red(s: &str) -> String {
     format!("{}{}{}", RED, randomize(s), NORMAL)

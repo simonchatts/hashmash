@@ -1,8 +1,8 @@
 [package]
 name = "hashmash"
-version = "1.0.2" # Automatically picked up everywhere else that needs it
-edition = "2018"
-authors = [ "Simon Chatterjee" ]
+version = "1.0.3"              # Automatically picked up everywhere else that needs it
+edition = "2021"
+authors = ["Simon Chatterjee"]
 license-file = "LICENSE"
 readme = "README.md"
 
@@ -10,9 +10,8 @@ readme = "README.md"
 name = "hashmash"
 
 [dependencies]
-atty = "0.2"
-clap = { version = "3.0.0-beta.7", features = ["derive"] }
-rand = "0.8"
+clap = { version = "4.5.32", features = ["derive"] }
+rand = "0.9"
 regex = "1"
 
 # `build_tri` isn't an example, but a one-time tool that constructs a
@@ -31,6 +30,14 @@ priority = "optional"
 section = "utilities"
 depends = "$auto"
 assets = [
-    [ "target/release/hashmash", "/usr/bin", "755" ],
-    [ "hashmash.1", "/usr/share/man/man1/", "644"  ]
+    [
+        "target/release/hashmash",
+        "/usr/bin",
+        "755",
+    ],
+    [
+        "hashmash.1",
+        "/usr/share/man/man1/",
+        "644",
+    ],
 ]

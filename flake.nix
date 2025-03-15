@@ -16,10 +16,13 @@
       name = cargoToml.package.name;
       systems = [ "x86_64-linux" "aarch64-linux" "x86_64-darwin" "aarch64-darwin" ];
       forAllSystems = f: nixpkgs.lib.genAttrs systems (system:
-        let pkgs = import nixpkgs {
-          inherit system;
-          overlays = [ self.overlay ];
-        }; in f pkgs);
+        let
+          pkgs = import nixpkgs {
+            inherit system;
+            overlays = [ self.overlay ];
+          };
+        in
+        f pkgs);
     in
     {
       # Overlay
