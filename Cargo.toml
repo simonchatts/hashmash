@@ -10,7 +10,7 @@ readme = "README.md"
 name = "hashmash"
 
 [dependencies]
-clap = { version = "4.5.32", features = ["derive"] }
+clap = { version = "4.5.47", features = ["derive"] }
 rand = "0.9"
 regex = "1"
 
