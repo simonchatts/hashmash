@@ -11,7 +11,7 @@ jobs:
     outputs:
       version: ${{ steps.rustversion.outputs.rustversion }}
     steps:
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@v4.1.7
     - run: cargo check
     - run: cargo pkgid
     - run: 'echo "$(cargo pkgid | cut -d# -f2)"'
@@ -52,11 +52,11 @@ jobs:
       RUSTFLAGS: '-C target-feature=+crt-static'
     name: Windows
     steps:
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@v4.1.7
     - name: Build
       run: cargo build --release
     - name: Upload Bin Artifact
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v4.3.1
       with:
         name: windows
         path: ./target/release/hashmash.exe
@@ -65,11 +65,11 @@ jobs:
     runs-on: macos-latest
     name: MacOS
     steps:
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@v4.1.7
     - name: Build
       run: cargo build --release
     - name: Upload Bin Artifact
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v4.3.1
       with:
         name: macos
         path: ./target/release/hashmash
@@ -109,7 +109,7 @@ jobs:
     needs: [quickcheck,  macosbuild, windowsbuild]
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v4.1.7
       - name: Create Release
         id: create_release
         uses: actions/create-release@v1
@@ -121,7 +121,7 @@ jobs:
           body: 'Change Me'
           draft: true
           prerelease: false
-      - uses: actions/download-artifact@v4
+      - uses: actions/download-artifact@v4.1.7
       - run: ls -lha
       # - name: Upload amd64 deb Release Asset
       #   uses: actions/upload-release-asset@v1
