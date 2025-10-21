@@ -42,7 +42,10 @@ pub fn main() {
     }
 
     // Do the rest in a Result context.
-    process(opts).unwrap_or_else(|err| eprintln!("{}: Error: {}", prog_name, err))
+    if let Err(err) = process(opts) {
+        eprintln!("{}: Error: {}", prog_name, err);
+        process::exit(1);
+    }
 }
 
 /// Bulk of the app logic.

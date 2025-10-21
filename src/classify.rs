@@ -16,7 +16,10 @@ pub fn is_hash(word: &str) -> bool {
         num_triples += 1;
 
         // If the first character of the triple is an ascii digit, just count that.
-        // (Note that ascii digit is not the same as `c0.is_digit()`.)
+        // Note:
+        // - ascii digit is not the same as `c0.is_digit()`.
+        // - this doesn't check the final two characters of the word, but that's
+        //   ok, since eg `word42` doesn't look like a hash based on the digits.
         if c0.is_ascii_digit() {
             num_digits += 1;
         }
