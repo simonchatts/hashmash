@@ -20,12 +20,8 @@ impl Transformer {
     /// the state ready for per-file processing.
     pub fn new(opts: &Opts) -> Self {
         // Pre-classifier to zoom in on candidate strings - this is just a quick
-        // search string that includes any hash we want to transform. For
-        // example, it doesn't matter that a base64 string might also include
-        // characters like `[/+=]`, since we expect there'll be runs matching
-        // this within a longer string, and we'll transform enough to hide the
-        // underlying secret.
-        let pre_classifier = Regex::new(r"([a-zA-Z0-9-]{8,})").unwrap();
+        // search string that includes any hash we want to transform.
+        let pre_classifier = Regex::new(r"([a-zA-Z0-9-/+=]{8,})").unwrap();
 
         // Whether or not stdout is a tty
         let use_colour = !opts.in_place && stdout().is_terminal();
