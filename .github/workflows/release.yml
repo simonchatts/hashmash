@@ -2,16 +2,20 @@
 
 # Commented out some builds that use ancient github actions that no longer work
 
-on: [push, pull_request]
+on:
+  push:
+    tags:
+      - 'v*'
 name: Release-candidate binaries
-
+permissions:
+  contents: read
 jobs:
   quickcheck:
     runs-on: ubuntu-latest
     outputs:
       version: ${{ steps.rustversion.outputs.rustversion }}
     steps:
-    - uses: actions/checkout@v4.1.7
+    - uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4.1.7
     - run: cargo check
     - run: cargo pkgid
     - run: 'echo "$(cargo pkgid | cut -d# -f2)"'
@@ -52,11 +56,11 @@ jobs:
       RUSTFLAGS: '-C target-feature=+crt-static'
     name: Windows
     steps:
-    - uses: actions/checkout@v4.1.7
+    - uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4.1.7
     - name: Build
       run: cargo build --release
     - name: Upload Bin Artifact
-      uses: actions/upload-artifact@v4.3.1
+      uses: actions/upload-artifact@5d5d22a31266ced268874388b861e4b58bb5c2f3 # v4.3.1
       with:
         name: windows
         path: ./target/release/hashmash.exe
@@ -65,11 +69,11 @@ jobs:
     runs-on: macos-latest
     name: MacOS
     steps:
-    - uses: actions/checkout@v4.1.7
+    - uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4.1.7
     - name: Build
       run: cargo build --release
     - name: Upload Bin Artifact
-      uses: actions/upload-artifact@v4.3.1
+      uses: actions/upload-artifact@5d5d22a31266ced268874388b861e4b58bb5c2f3 # v4.3.1
       with:
         name: macos
         path: ./target/release/hashmash
@@ -108,11 +112,13 @@ jobs:
   update_release_draft:
     needs: [quickcheck,  macosbuild, windowsbuild]
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
     steps:
-      - uses: actions/checkout@v4.1.7
+      - uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4.1.7
       - name: Create Release
         id: create_release
-        uses: actions/create-release@v1
+        uses: actions/create-release@0cb9c9b65d5d1901c1f53e5e66eaf4afd303e70e # v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
@@ -121,7 +127,7 @@ jobs:
           body: 'Change Me'
           draft: true
           prerelease: false
-      - uses: actions/download-artifact@v4.1.7
+      - uses: actions/download-artifact@65a9edc5881444af0b9093a5e628f2fe47ea3b2e # v4.1.7
       - run: ls -lha
       # - name: Upload amd64 deb Release Asset
       #   uses: actions/upload-release-asset@v1
@@ -142,7 +148,7 @@ jobs:
       #     asset_name: 'hashmash_${{needs.quickcheck.outputs.version}}_armhf.deb'
       #     asset_content_type: application/vnd.debian.binary-package
       - name: Upload Windows Release Asset
-        uses: actions/upload-release-asset@v1
+        uses: actions/upload-release-asset@e8f9f06c4b078e705bd2ea027f0926603fc9b4d5 # v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
@@ -151,7 +157,7 @@ jobs:
           asset_name: 'hashmash_${{needs.quickcheck.outputs.version}}_windows.exe'
           asset_content_type: application/octet-stream
       - name: Upload MacOS Release Asset
-        uses: actions/upload-release-asset@v1
+        uses: actions/upload-release-asset@e8f9f06c4b078e705bd2ea027f0926603fc9b4d5 # v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:

@@ -1,5 +1,7 @@
 name: "Cachix binaries"
 on: [push, pull_request]
+permissions:
+  contents: read
 jobs:
   build:
     runs-on: ${{ matrix.os }}
@@ -7,9 +9,9 @@ jobs:
       matrix:
         os: [ubuntu-latest, macos-latest]
     steps:
-    - uses: actions/checkout@v4.1.7
-    - uses: cachix/install-nix-action@v31
-    - uses: cachix/cachix-action@v15
+    - uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4.1.7
+    - uses: cachix/install-nix-action@b730b38fde655c354216f7bb920e61e27e327948 # v31
+    - uses: cachix/cachix-action@ad2ddac53f961de1989924296a1f236fcfbaa4fc # v15
       with:
         name: simonchatts
         signingKey: '${{ secrets.CACHIX_SIGNING_KEY }}'
