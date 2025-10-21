@@ -1,7 +1,7 @@
 //! Take all the options and make a `transformer` from any `BufRead` to `Write`.
 
 use regex::{Captures, Regex};
-use std::io::{self, stdout, BufRead, IsTerminal, Write};
+use std::io::{self, BufRead, IsTerminal, Write, stdout};
 
 use crate::classify;
 use crate::opts::Opts;

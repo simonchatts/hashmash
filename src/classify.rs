@@ -135,10 +135,10 @@ mod tests {
             "wikipedia",
         ];
         for word in test_hashes.iter() {
-            assert_eq!(is_hash(word), true, "testing {}", word);
+            assert!(is_hash(word), "testing {}", word);
         }
         for word in test_not_hashes.iter() {
-            assert_eq!(is_hash(word), false, "testing {}", word);
+            assert!(!is_hash(word), "testing {}", word);
         }
     }
 }

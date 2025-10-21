@@ -1,7 +1,7 @@
 [package]
 name = "hashmash"
-version = "1.0.3"              # Automatically picked up everywhere else that needs it
-edition = "2021"
+version = "1.0.4"              # Automatically picked up everywhere else that needs it
+edition = "2024"
 authors = ["Simon Chatterjee"]
 license-file = "LICENSE"
 readme = "README.md"

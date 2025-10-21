@@ -21,8 +21,8 @@ fn main() {
     }
     let filename = "src/trigrams.bitmap";
     bitmap
-        .write(&filename)
-        .unwrap_or_else(|err| eprintln!("Can't write to {}: {}", &filename, err))
+        .write(filename)
+        .unwrap_or_else(|err| eprintln!("Can't write to {}: {}", filename, err))
 }
 
 /// 4kb bitmap (mapping a 15-bit key to 1-bit of data)
@@ -54,7 +54,7 @@ impl Bitmap {
 /// The top 15% of English letter triagrams (in decreasing order of frequency,
 /// but we don't care about that). From
 /// http://practicalcryptography.com/cryptanalysis/letter-frequencies-various-languages/english-letter-frequencies/
-const TOP_TRIGRAMS: [&str; 2648] = [
+static TOP_TRIGRAMS: [&str; 2648] = [
     "THE", "AND", "ING", "ENT", "ION", "HER", "FOR", "THA", "NTH", "INT", "ERE", "TIO",
     "TER", "EST", "ERS", "ATI", "HAT", "ATE", "ALL", "ETH", "HES", "VER", "HIS", "OFT",
     "ITH", "FTH", "STH", "OTH", "RES", "ONT", "DTH", "ARE", "REA", "EAR", "WAS", "SIN",

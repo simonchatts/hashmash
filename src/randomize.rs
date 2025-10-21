@@ -1,6 +1,6 @@
 //! Randomize a string, while maintaining character classes.
 use rand::rngs::ThreadRng;
-use rand::{rng, Rng};
+use rand::{Rng, rng};
 
 /// Randomize a string, while preserving major character classes. eg
 /// "123-abc_DEF" might go to "973-qox_NAP". It doesn't matter that the random
@@ -45,9 +45,9 @@ mod tests {
         let output = randomize(input);
         let mut changes = 0;
         let char_classes: &[fn(char) -> bool] = &[
-            |x| x >= '0' && x <= '9',
-            |x| x >= 'a' && x <= 'z',
-            |x| x >= 'A' && x <= 'Z',
+            |x| x.is_ascii_digit(),
+            |x| x.is_ascii_lowercase(),
+            |x| x.is_ascii_uppercase(),
             |x| x == '-',
         ];
 
