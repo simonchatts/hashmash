@@ -11,7 +11,7 @@ name = "hashmash"
 
 [dependencies]
 clap = { version = "4.5.32", features = ["derive"] }
-rand = "0.9"
+rand = "0.10"
 regex = "1"
 
 # `build_tri` isn't an example, but a one-time tool that constructs a
